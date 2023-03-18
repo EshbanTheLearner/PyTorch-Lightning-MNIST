@@ -47,3 +47,35 @@ def train(model, optimizer, train_loader, val_loader, num_epochs=10, seed=42, de
                     f" | Val Total Loss: {val_loss:.4f}"
                 )
 
+if __name__ == "__main__":
+    print(watermark(packages="torch", python=True))
+    print(f"Torch CUDA Available? {torch.cuda.is_available()}")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    train_loader, val_loader, test_loader = get_data()
+    model = PyTorchMLP(num_features=784, num_classes=10)
+    model.to(device)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.05)
+
+    train(
+        model, 
+        optimizer,
+        train_loader=train_loader,
+        val_loader=val_loader,
+        num_epochs=10,
+        seed=42,
+        device=device
+    )
+
+    train_acc = compute_accuracy(model, train_loader, device=device)
+    val_acc = compute_accuracy(model, val_loader, device=device)
+    test_acc = compute_accuracy(model, test_loader, device=device)
+
+    print(
+        f"Train Acc. {train_acc*100:.2f}%"
+        f" | Val Acc. {val_acc*100:.2f}%"
+        f" | Test Acc. {test_acc*100:.2f}%"
+    )
+
+PATH = "PyTorchMLP.pt"
+torch.save(model.state_dict(), PATH)
