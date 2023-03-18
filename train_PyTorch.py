@@ -2,8 +2,6 @@ import torch
 import torch.nn.functional as F
 from MLP_PyTorch import PyTorchMLP
 from utils import get_data, compute_accuracy
-from watermark import watermark
-
 
 def compute_total_loss(model, dataloader, device=None):
     if device is None:
@@ -41,14 +39,13 @@ def train(model, optimizer, train_loader, val_loader, num_epochs=10, seed=42, de
             if not batch_idx % 250:
                 val_loss = compute_total_loss(model, val_loader, device=device)
                 print(
-                    f"Epoch: {epoch+1:03d}/{num_epochs:.03d}"
+                    f"Epoch: {epoch+1:03d}/{num_epochs:03d}"
                     f" | Batch {batch_idx:03d}/{len(train_loader):03d}"
                     f" | Train Batch Loss: {loss:.4f}"
                     f" | Val Total Loss: {val_loss:.4f}"
                 )
 
 if __name__ == "__main__":
-    print(watermark(packages="torch", python=True))
     print(f"Torch CUDA Available? {torch.cuda.is_available()}")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

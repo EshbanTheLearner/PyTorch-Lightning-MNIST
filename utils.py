@@ -48,7 +48,7 @@ def compute_accuracy(model, dataloader, device=None):
     correct = 0.0
     total_examples = 0
 
-    for idx, (fetures, labels) in enumerate(dataloader):
+    for idx, (features, labels) in enumerate(dataloader):
         features, labels = features.to(device), labels.to(device)
         with torch.no_grad():
             logits = model(features)
