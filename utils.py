@@ -1,3 +1,4 @@
+import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from torch.utils.data.dataset import random_split
@@ -37,3 +38,23 @@ def get_data():
     )
 
     return train_loader, val_loader, test_loader
+
+def compute_accuracy(model, dataloader, device=None):
+    if device is None:
+        device = torch.device("cpu")
+    
+    model = model.eval()
+
+    correct = 0.0
+    total_examples = 0
+
+    for idx, (fetures, labels) in enumerate(dataloader):
+        features, labels = features.to(device), labels.to(device)
+        with torch.no_grad():
+            logits = model(features)
+        predicitions = torch.argmax(logits, dim=1)
+        compare = labels == predicitions
+        correct += torch.sum(compare)
+        total_examples += len(compare)
+    
+    return correct / total_examples
