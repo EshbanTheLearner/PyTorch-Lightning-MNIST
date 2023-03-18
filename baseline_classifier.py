@@ -14,14 +14,14 @@ val_counter = Counter()
 for images, labels in val_loader:
     val_counter.update(labels.tolist())
 
-print("\Validation Label Distribution:")
+print("\nValidation Label Distribution:")
 print(sorted(val_counter.items()))
 
 test_counter = Counter()
 for images, labels in test_loader:
     test_counter.update(labels.tolist())
 
-print("\Test Label Distribution:")
+print("\nTest Label Distribution:")
 print(sorted(test_counter.items()))
 
 majority_class = test_counter.most_common(1)[0]
