@@ -57,3 +57,10 @@ for images, labels in test_loader:
 
 print("\Test Label Distribution:")
 print(sorted(test_counter.items()))
+
+majority_class = test_counter.most_common(1)[0]
+print(f"Majority Class: {majority_class[0]}")
+
+baseline_acc = majority_class[1] / sum(test_counter.values())
+print("Acuuracy when always prediciting the majority class:")
+print(f"{baseline_acc:.2f} ({baseline_acc*100:.2f}%)")
